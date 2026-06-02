@@ -135,11 +135,15 @@
             border-bottom-color: var(--border);
         }
         .nav-logo {
-            font-family: 'EB Garamond', serif;
-            font-size: 30px;
-            color: var(--orange);
             text-decoration: none;
-            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo img {
+            height: 44px;
+            width: auto;
+            mix-blend-mode: screen;
+            filter: brightness(1.1);
         }
         .nav-links {
             display: flex;
@@ -208,6 +212,14 @@
             letter-spacing: 0.05em;
             margin-bottom: 18px;
             text-shadow: 0 2px 60px rgba(0,0,0,0.5);
+        }
+        .hero-logo {
+            width: clamp(220px, 40vw, 420px);
+            height: auto;
+            mix-blend-mode: screen;
+            filter: brightness(1.15) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
+            margin: 0 auto 18px;
+            display: block;
         }
         .hero-tagline {
             font-family: 'EB Garamond', serif;
@@ -742,12 +754,11 @@
             padding-bottom: 48px;
             border-bottom: 1px solid var(--border);
         }
-        .footer-brand .footer-logo {
-            font-family: 'EB Garamond', serif;
-            font-size: 42px;
-            color: var(--orange);
-            letter-spacing: 0.08em;
-            line-height: 1;
+        .footer-brand .footer-logo img {
+            height: 56px;
+            width: auto;
+            mix-blend-mode: screen;
+            filter: brightness(1.1);
         }
         .footer-brand .footer-sub {
             font-family: 'EB Garamond', serif;
@@ -921,7 +932,9 @@
 
 <!-- ══ NAVBAR ══ -->
 <nav id="navbar">
-    <a href="#" class="nav-logo">MÔI</a>
+    <a href="#" class="nav-logo">
+        <img src="imgs/logo.png" alt="MÔI Bar">
+    </a>
     <ul class="nav-links">
         <li><a href="#sobre">Quem somos</a></li>
         <li><a href="#programacao">Programação</a></li>
@@ -939,7 +952,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <p class="hero-super">Setor Bueno · Goiânia · Desde 2022</p>
-        <h1>MÔI</h1>
+        <img src="imgs/logo.png" alt="MÔI" class="hero-logo">
         <p class="hero-tagline">Seu refúgio no Setor Bueno</p>
         <div class="hero-ctas">
             <a href="#programacao" class="btn-filled">Ver programação</a>
@@ -1172,7 +1185,9 @@
 <footer>
     <div class="footer-main">
         <div class="footer-brand">
-            <div class="footer-logo">MÔI</div>
+            <div class="footer-logo">
+                <img src="imgs/logo.png" alt="MÔI Bar">
+            </div>
             <div class="footer-sub">Seu refúgio no Setor Bueno</div>
         </div>
         <ul class="footer-nav">
