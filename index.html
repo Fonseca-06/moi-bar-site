@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÔI — Seu refúgio no Setor Bueno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:      #070707;
+            --dark:       #0C0C0C;
+            --warm-dark:  #100601;
+            --surface:    #181210;
+            --surface-2:  #201810;
+            --border:     #2A1E14;
+            --border-lt:  #332515;
+
+            --orange:     #E8610A;
+            --orange-lt:  #F07830;
+            --orange-dk:  #C04E08;
+            --orange-glow: 0 0 48px rgba(232, 97, 10, 0.2);
+            --orange-dim:  rgba(232, 97, 10, 0.08);
+
+            --cream:      #F2EBE0;
+            --cream-dim:  #A89880;
+
+            /* Section gradient backgrounds */
+            --grad-A: linear-gradient(to bottom, #0C0C0C 0%, #110701 100%);
+            --grad-B: linear-gradient(to bottom, #110701 0%, #160902 100%);
+            --grad-C: linear-gradient(160deg, #100601 0%, #0C0C0C 100%);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+
+        body {
+            background: var(--black);
+            color: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.65;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        /* Grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'EB Garamond', serif;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+        img { display: block; }
+
+        /* ── UTILS ── */
+        .label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 16px;
+        }
+        .divider {
+            width: 48px;
+            height: 1px;
+            background: linear-gradient(to right, var(--orange), transparent);
+            margin: 24px 0;
+        }
+
+        .btn-filled {
+            display: inline-block;
+            background: var(--orange);
+            color: #fff;
+            padding: 13px 30px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: background 0.25s, box-shadow 0.25s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-filled:hover { background: var(--orange-lt); box-shadow: var(--orange-glow); }
+
+        .btn-ghost {
+            display: inline-block;
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(242, 235, 224, 0.25);
+            padding: 12px 30px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: border-color 0.25s, color 0.25s;
+            cursor: pointer;
+        }
+        .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+        /* ── NAVBAR ── */
+        #navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 24px 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.4s, padding 0.3s, border-color 0.4s;
+            border-bottom: 1px solid transparent;
+        }
+        #navbar.scrolled {
+            background: rgba(7, 7, 7, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 14px 72px;
+            border-bottom-color: var(--border);
+        }
+        .nav-logo {
+            font-family: 'EB Garamond', serif;
+            font-size: 30px;
+            color: var(--orange);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--cream-dim);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--cream); }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 640px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('imgs/hero.jpg') center / cover no-repeat;
+            filter: brightness(0.38) saturate(1.15);
+            transform: scale(1.04);
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 80%, rgba(200, 60, 0, 0.12) 0%, transparent 70%),
+                linear-gradient(to bottom,
+                    rgba(7,7,7,0.2) 0%,
+                    rgba(7,7,7,0.0) 30%,
+                    rgba(7,7,7,0.55) 70%,
+                    rgba(7,7,7,1)   100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 24px;
+        }
+        .hero-super {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+        .hero h1 {
+            font-size: clamp(88px, 15vw, 152px);
+            color: var(--cream);
+            letter-spacing: 0.05em;
+            margin-bottom: 18px;
+            text-shadow: 0 2px 60px rgba(0,0,0,0.5);
+        }
+        .hero-tagline {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: clamp(18px, 2.5vw, 26px);
+            color: var(--cream-dim);
+            letter-spacing: 0.04em;
+            margin-bottom: 48px;
+        }
+        .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.45;
+        }
+        .scroll-hint span {
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--cream-dim);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, transparent, var(--orange));
+            animation: flow 2.2s ease-in-out infinite;
+        }
+        @keyframes flow {
+            0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+            50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+            50.1%{ transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+        }
+
+        /* ── SOBRE ── */
+        .sobre-section {
+            background: var(--grad-A);
+            padding: 120px 0;
+            overflow: hidden;
+        }
+        .sobre-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 72px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 96px;
+            align-items: center;
+        }
+        /* Grid children can overflow if min-width not set */
+        .sobre-inner > * { min-width: 0; }
+        .sobre-img {
+            position: relative;
+            border-radius: 3px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+        .sobre-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.82) saturate(1.1);
+            transition: filter 0.5s;
+        }
+        .sobre-img:hover img { filter: brightness(0.92); }
+        /* Orange frame accent */
+        .sobre-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(232, 97, 10, 0.2);
+            border-radius: 3px;
+            pointer-events: none;
+        }
+        /* Bottom glow */
+        .sobre-img::before {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 10%; right: 10%;
+            height: 60%;
+            background: radial-gradient(ellipse at bottom, rgba(232, 97, 10, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .sobre-title {
+            font-size: clamp(36px, 4.5vw, 54px);
+            color: var(--cream);
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+        .sobre-text {
+            font-size: 16px;
+            color: var(--cream-dim);
+            line-height: 1.9;
+            margin-bottom: 16px;
+        }
+        /* Replace emoji cards with editorial quote */
+        .review-pull {
+            margin-top: 40px;
+            padding: 28px 32px;
+            border-left: 2px solid var(--orange);
+            background: linear-gradient(to right, rgba(232,97,10,0.07), transparent);
+            border-radius: 0 3px 3px 0;
+        }
+        .review-text {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 19px;
+            color: var(--cream);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .review-meta {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--orange);
+        }
+        /* Subtle rating line */
+        .sobre-rating {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .rating-num {
+            font-family: 'EB Garamond', serif;
+            font-size: 36px;
+            color: var(--orange);
+            line-height: 1;
+        }
+        .rating-detail { display: flex; flex-direction: column; gap: 2px; }
+        .rating-stars { color: var(--orange); font-size: 13px; letter-spacing: 2px; }
+        .rating-count { font-size: 12px; color: var(--cream-dim); }
+
+        /* ── PROGRAMAÇÃO ── */
+        .prog-section {
+            background: var(--grad-B);
+            border-top: 1px solid var(--border);
+            padding: 120px 0;
+        }
+        .prog-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 72px;
+        }
+        .prog-head {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: end;
+            margin-bottom: 64px;
+            gap: 24px;
+        }
+        .prog-title {
+            font-size: clamp(40px, 5.5vw, 64px);
+            color: var(--cream);
+            letter-spacing: -0.01em;
+        }
+        .prog-sub {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--cream-dim);
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        /* Editorial event list — NOT cards */
+        .event-list { display: flex; flex-direction: column; }
+
+        .event-row {
+            display: grid;
+            grid-template-columns: 180px 1fr auto;
+            align-items: center;
+            gap: 32px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+            cursor: default;
+            position: relative;
+        }
+        .event-row::before {
+            content: '';
+            position: absolute;
+            left: -72px; right: -72px; top: 0; bottom: 0;
+            background: var(--orange-dim);
+            opacity: 0;
+            transition: opacity 0.25s;
+            pointer-events: none;
+        }
+        .event-row:hover::before { opacity: 1; }
+        .event-row:first-child { border-top: 1px solid var(--border); }
+        .event-row.destaque {
+            grid-template-columns: 180px 1fr auto;
+        }
+        .event-row.destaque::before { opacity: 0.6; }
+
+        .event-day {
+            font-family: 'EB Garamond', serif;
+            font-size: 38px;
+            color: var(--cream);
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+        .event-row.destaque .event-day { color: var(--orange); }
+
+        .event-body { display: flex; flex-direction: column; gap: 4px; }
+        .event-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+        .event-desc { font-size: 13px; color: var(--cream-dim); }
+
+        .event-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .event-time {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            color: var(--cream-dim);
+            white-space: nowrap;
+        }
+        .event-row.destaque .event-time { color: var(--cream); }
+        .event-badge {
+            display: inline-block;
+            background: var(--orange);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 2px;
+        }
+        .event-badge.ghost {
+            background: transparent;
+            border: 1px solid var(--orange);
+            color: var(--orange);
+        }
+
+        /* ── HAPPY HOUR ── */
+        .hh-section {
+            background: var(--grad-C);
+            border-top: 1px solid var(--border);
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Background glow */
+        .hh-section::before {
+            content: '';
+            position: absolute;
+            bottom: -20%; left: -10%;
+            width: 60%; height: 80%;
+            background: radial-gradient(ellipse, rgba(232,97,10,0.08) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .hh-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 72px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 88px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hh-img {
+            position: relative;
+            border-radius: 3px;
+            overflow: hidden;
+            aspect-ratio: 3/2;
+        }
+        .hh-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.75) contrast(1.05);
+        }
+        .hh-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(232,97,10,0.2);
+            border-radius: 3px;
+            pointer-events: none;
+        }
+        /* Radial glow behind image */
+        .hh-img-glow {
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(ellipse at center, rgba(232,97,10,0.15) 0%, transparent 65%);
+            z-index: -1;
+            border-radius: 3px;
+        }
+        .hh-title {
+            font-size: clamp(38px, 5vw, 58px);
+            color: var(--cream);
+            line-height: 1.1;
+            margin-bottom: 22px;
+            letter-spacing: -0.01em;
+        }
+        .hh-title em { font-style: italic; color: var(--orange); }
+        .hh-text { font-size: 16px; color: var(--cream-dim); line-height: 1.85; margin-bottom: 36px; }
+
+        .hh-promo {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(200,60,0,0.12) 100%);
+            border: 1px solid rgba(232,97,10,0.4);
+            border-radius: 3px;
+            padding: 20px 28px;
+            box-shadow: var(--orange-glow);
+        }
+        .hh-promo-icon { font-size: 30px; flex-shrink: 0; }
+        .hh-promo-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            color: var(--cream);
+            line-height: 1.2;
+        }
+        .hh-promo-sub { font-size: 12px; color: var(--cream-dim); margin-top: 3px; }
+
+        /* ── CARDÁPIO ── */
+        .card-section {
+            background: var(--grad-A);
+            border-top: 1px solid var(--border);
+            padding: 120px 0;
+        }
+        .card-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 72px;
+        }
+        .card-title {
+            font-size: clamp(40px, 5.5vw, 64px);
+            color: var(--cream);
+            letter-spacing: -0.01em;
+            margin-bottom: 56px;
+        }
+
+        /* Asymmetric drinks layout — NOT 3 equal cards */
+        .drinks-layout {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 16px;
+        }
+        .drink-featured {
+            grid-row: 1 / 3;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .drink-featured:hover {
+            box-shadow: var(--orange-glow);
+            border-color: rgba(232,97,10,0.35);
+        }
+        .drink-featured-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            filter: brightness(0.8) saturate(1.1);
+            transition: filter 0.4s, transform 0.4s;
+        }
+        .drink-featured:hover .drink-featured-img { filter: brightness(0.92); transform: scale(1.02); }
+        .drink-featured-body { padding: 28px 28px 32px; }
+        .drink-featured-name {
+            font-family: 'EB Garamond', serif;
+            font-size: 28px;
+            color: var(--cream);
+            margin-bottom: 8px;
+        }
+        .drink-featured-desc { font-size: 14px; color: var(--cream-dim); line-height: 1.6; }
+
+        .drink-side {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .drink-side:hover {
+            box-shadow: var(--orange-glow);
+            border-color: rgba(232,97,10,0.3);
+        }
+        .drink-side-img {
+            width: 45%;
+            flex-shrink: 0;
+            object-fit: cover;
+            filter: brightness(0.78);
+            transition: filter 0.3s;
+        }
+        .drink-side:hover .drink-side-img { filter: brightness(0.9); }
+        .drink-side-body { padding: 24px 22px; display: flex; flex-direction: column; justify-content: center; }
+        .drink-side-name {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            color: var(--cream);
+            margin-bottom: 8px;
+        }
+        .drink-side-desc { font-size: 13px; color: var(--cream-dim); line-height: 1.5; }
+
+        .card-footer {
+            margin-top: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card-footer-text {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--cream-dim);
+        }
+
+        /* ── GALERIA ── */
+        .galeria {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            height: 500px;
+        }
+        .gal-item { overflow: hidden; position: relative; }
+        .gal-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.70) saturate(1.1);
+            transition: filter 0.5s, transform 0.5s;
+        }
+        .gal-item:hover img { filter: brightness(0.88) saturate(1.2); transform: scale(1.04); }
+        .gal-item + .gal-item { border-left: 2px solid var(--black); }
+        /* Subtle orange tint on hover */
+        .gal-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(200,60,0,0.15) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .gal-item:hover::after { opacity: 1; }
+
+        /* ── LOCALIZAÇÃO ── */
+        .local-section {
+            background: var(--grad-B);
+            border-top: 1px solid var(--border);
+            padding: 120px 0;
+        }
+        .local-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 72px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 88px;
+            align-items: start;
+        }
+        .local-title {
+            font-size: clamp(36px, 4.5vw, 54px);
+            color: var(--cream);
+            margin-bottom: 36px;
+            letter-spacing: -0.01em;
+        }
+        .info-list { list-style: none; display: flex; flex-direction: column; gap: 18px; margin-bottom: 48px; }
+        .info-item { display: flex; align-items: flex-start; gap: 14px; font-size: 15px; color: var(--cream-dim); }
+        .info-icon { color: var(--orange); flex-shrink: 0; margin-top: 1px; }
+        .info-item a { color: var(--cream-dim); text-decoration: none; transition: color 0.2s; }
+        .info-item a:hover { color: var(--orange); }
+
+        .horas-lista { list-style: none; }
+        .hora-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .hora-row:first-child { border-top: 1px solid var(--border); }
+        .hora-dia { color: var(--cream-dim); }
+        .hora-val { font-weight: 500; color: var(--cream); }
+        .hora-val.fechado { color: var(--cream-dim); opacity: 0.3; font-weight: 300; }
+        .hora-val.destaque { color: var(--orange); }
+
+        .map-box {
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--orange-glow);
+        }
+        .map-box iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.8) invert(0.88) contrast(0.85) brightness(0.9); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--border);
+            padding: 60px 72px 36px;
+        }
+        .footer-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: start;
+            gap: 40px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+        }
+        .footer-brand .footer-logo {
+            font-family: 'EB Garamond', serif;
+            font-size: 42px;
+            color: var(--orange);
+            letter-spacing: 0.08em;
+            line-height: 1;
+        }
+        .footer-brand .footer-sub {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--cream-dim);
+            margin-top: 8px;
+        }
+        .footer-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        .footer-nav a {
+            color: var(--cream-dim);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .footer-nav a:hover { color: var(--orange); }
+        .footer-social {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .soc-btn {
+            width: 44px; height: 44px;
+            border: 1px solid var(--border-lt);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cream-dim);
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .soc-btn:hover { border-color: var(--orange); color: var(--orange); box-shadow: var(--orange-glow); }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-copy { font-size: 11px; color: var(--cream-dim); opacity: 0.35; letter-spacing: 0.05em; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            #navbar { padding: 18px 32px; }
+            #navbar.scrolled { padding: 12px 32px; }
+            .sobre-inner { padding: 0 32px; grid-template-columns: 1fr; gap: 48px; }
+            .sobre-img { aspect-ratio: 16/9; }
+            .prog-inner { padding: 0 32px; }
+            .prog-head { grid-template-columns: 1fr; }
+            .prog-sub { text-align: left; }
+            .event-row { grid-template-columns: 140px 1fr auto; gap: 20px; }
+            .event-row::before { left: -32px; right: -32px; }
+            .hh-inner { padding: 0 32px; grid-template-columns: 1fr; gap: 48px; }
+            .card-inner { padding: 0 32px; }
+            .drinks-layout { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .drink-featured { grid-row: auto; }
+            .drink-side { flex-direction: column; }
+            .drink-side-img { width: 100%; height: 180px; }
+            .local-inner { padding: 0 32px; grid-template-columns: 1fr; gap: 48px; }
+            footer { padding: 48px 32px 28px; }
+            .footer-main { grid-template-columns: 1fr; gap: 32px; }
+            .footer-social { justify-content: flex-start; }
+            .footer-nav { align-items: flex-start; }
+        }
+        @media (max-width: 640px) {
+            #navbar { padding: 14px 20px; }
+            #navbar .btn-filled { display: none; }  /* hide on mobile, scroll handles navigation */
+            .nav-links { display: none; }
+
+            .hero-super { font-size: 9px; letter-spacing: 0.2em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90vw; }
+            .hero h1 { font-size: clamp(72px, 22vw, 100px); }
+            .hero-tagline { font-size: 16px; }
+            .hero-ctas { gap: 10px; }
+            .hero-ctas .btn-filled,
+            .hero-ctas .btn-ghost { padding: 11px 20px; font-size: 11px; }
+
+            .sobre-section, .prog-section, .hh-section,
+            .card-section, .local-section { padding: 72px 0; overflow-x: hidden; }
+            .sobre-inner, .prog-inner, .hh-inner, .card-inner, .local-inner {
+                padding: 0 20px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            /* Sobre text overflow fix */
+            .sobre-title {
+                font-size: 24px;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+                max-width: 100%;
+                hyphens: auto;
+            }
+            .sobre-text { font-size: 15px; }
+            .review-pull { padding: 18px; margin-left: 0; margin-right: 0; }
+            .sobre-rating { flex-wrap: wrap; gap: 12px; }
+            .rating-num { font-size: 28px; }
+
+            /* Programação — fix overflow */
+            .event-row {
+                grid-template-columns: 90px 1fr;
+                gap: 14px;
+                padding: 20px 0;
+            }
+            .event-row::before { left: -20px; right: -20px; }
+            .event-right { display: none; }
+            .event-day { font-size: 26px; }
+            .event-name { font-size: 14px; white-space: normal; }
+            .event-desc {
+                font-size: 11px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: calc(100vw - 130px);
+            }
+            /* Show time inline on mobile since event-right is hidden */
+            .event-body::after {
+                content: attr(data-time);
+                display: block;
+                font-family: 'EB Garamond', serif;
+                font-size: 15px;
+                color: var(--cream-dim);
+                margin-top: 6px;
+            }
+
+            /* Localização hours — stack on mobile */
+            .horas-lista { width: 100%; }
+            .hora-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                padding: 12px 0;
+            }
+            .hora-dia { font-size: 12px; }
+            .hora-val { font-size: 14px; }
+            .hora-val.destaque { font-size: 14px; white-space: normal; }
+            /* Info items wrap */
+            .info-item { font-size: 14px; }
+
+            /* Review pull adjust */
+            .review-pull { padding: 20px; }
+            .review-text { font-size: 17px; }
+
+            .hh-promo { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+            .galeria { grid-template-columns: 1fr; height: auto; }
+            .gal-item { height: 220px; }
+            .gal-item + .gal-item { border-left: none; border-top: 2px solid var(--black); }
+
+            footer { padding: 40px 20px 24px; }
+
+            .footer-main { grid-template-columns: 1fr; gap: 28px; }
+            .footer-social { justify-content: flex-start; }
+            .footer-nav { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 16px; }
+            .footer-bottom { flex-direction: column; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav id="navbar">
+    <a href="#" class="nav-logo">MÔI</a>
+    <ul class="nav-links">
+        <li><a href="#sobre">Quem somos</a></li>
+        <li><a href="#programacao">Programação</a></li>
+        <li><a href="#cardapio">Cardápio</a></li>
+        <li><a href="#local">Localização</a></li>
+        <li><a href="https://instagram.com/moigoiania" target="_blank" rel="noopener">@moigoiania</a></li>
+    </ul>
+    <a href="#programacao" class="btn-filled">Ver programação</a>
+</nav>
+
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-super">Setor Bueno · Goiânia · Desde 2022</p>
+        <h1>MÔI</h1>
+        <p class="hero-tagline">Seu refúgio no Setor Bueno</p>
+        <div class="hero-ctas">
+            <a href="#programacao" class="btn-filled">Ver programação</a>
+            <a href="#cardapio" class="btn-ghost">Cardápio</a>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+</div>
+
+
+<!-- ══ SOBRE ══ -->
+<div class="sobre-section" id="sobre">
+    <div class="sobre-inner">
+        <div class="sobre-img">
+            <img src="imgs/crowd.jpg" alt="Galera no MÔI">
+        </div>
+        <div>
+            <p class="label">Nossa história</p>
+            <h2 class="sobre-title">Um lugar que virou o ponto do Bueno</h2>
+            <p class="sobre-text">
+                Em 2022 abrimos as portas no Setor Bueno com um objetivo direto: criar o bar que Goiânia precisava. Sem frescura, com boa música, chopp gelado e aquela energia que faz você querer ficar até fechar.
+            </p>
+            <p class="sobre-text">
+                Três anos depois, somos referência no bairro — 44 mil seguidores no Instagram e um dos bares mais comentados da cidade provam que o MÔI não é só um bar. É um encontro. Toda semana, toda noite.
+            </p>
+
+            <div class="review-pull">
+                <p class="review-text">"Ambiente incrível, atendimento excelente. O torresmo é sensacional e o chopp sempre gelado. Virou nosso ponto fixo no Bueno."</p>
+                <span class="review-meta">★★★★★ — Avaliação Google · 4.3 de 5 · 273 avaliações</span>
+            </div>
+
+            <div class="sobre-rating">
+                <div class="rating-num">44K</div>
+                <div class="rating-detail">
+                    <span class="rating-stars">★★★★★</span>
+                    <span class="rating-count">Seguidores no Instagram · @moigoiania</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ PROGRAMAÇÃO ══ -->
+<div class="prog-section" id="programacao">
+    <div class="prog-inner">
+        <div class="prog-head">
+            <div>
+                <p class="label">Agenda semanal</p>
+                <h2 class="prog-title">A semana<br>no MÔI</h2>
+            </div>
+            <p class="prog-sub">Quatro noites pra você não ficar em casa. Cada dia tem o seu clima — e a casa está sempre aberta.</p>
+        </div>
+
+        <div class="event-list">
+            <div class="event-row">
+                <div class="event-day">Quarta</div>
+                <div class="event-body" data-time="18h — 01h">
+                    <span class="event-name">Começa bem, termina melhor</span>
+                    <span class="event-desc">Ambiente descontraído · Som variado · Chopp gelado</span>
+                </div>
+                <div class="event-right">
+                    <span class="event-time">18h — 01h</span>
+                </div>
+            </div>
+
+            <div class="event-row">
+                <div class="event-day">Quinta</div>
+                <div class="event-body" data-time="19h — 02h">
+                    <span class="event-name">Dobradinha de Chopp</span>
+                    <span class="event-desc">Promoção em todo o horário · A semana passa rápido daqui</span>
+                </div>
+                <div class="event-right">
+                    <span class="event-time">19h — 02h</span>
+                    <span class="event-badge">Happy Hour</span>
+                </div>
+            </div>
+
+            <div class="event-row">
+                <div class="event-day">Sexta</div>
+                <div class="event-body" data-time="19h — 03h">
+                    <span class="event-name">A cidade vira no Bueno</span>
+                    <span class="event-desc">Movimento alto · Boa energia · Noite longa</span>
+                </div>
+                <div class="event-right">
+                    <span class="event-time">19h — 03h</span>
+                </div>
+            </div>
+
+            <div class="event-row destaque">
+                <div class="event-day">Sábado</div>
+                <div class="event-body" data-time="19h — 03h">
+                    <span class="event-name">A maior noite da semana</span>
+                    <span class="event-desc">Casa cheia · Vai rolar muito — garante seu lugar</span>
+                </div>
+                <div class="event-right">
+                    <span class="event-time">19h — 03h</span>
+                    <span class="event-badge ghost">Destaque</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ HAPPY HOUR ══ -->
+<div class="hh-section">
+    <div class="hh-inner">
+        <div style="position:relative;">
+            <div class="hh-img-glow"></div>
+            <div class="hh-img">
+                <img src="imgs/chopp.jpg" alt="Chopp gelado no MÔI">
+            </div>
+        </div>
+        <div>
+            <p class="label">Toda quinta-feira</p>
+            <h2 class="hh-title">O melhor <em>happy hour</em> do Bueno</h2>
+            <p class="hh-text">
+                Toda quinta a gente começa mais cedo e encerra com a semana esquecida. Das 19h até às 2h da manhã, dobradinha de chopp com preço de amigo — porque sexta tá chegando e a vida é boa.
+            </p>
+            <div class="hh-promo">
+                <span class="hh-promo-icon">🍺</span>
+                <div>
+                    <div class="hh-promo-label">Dobradinha de Chopp</div>
+                    <div class="hh-promo-sub">Todo dia de quinta · 19h às 02h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ CARDÁPIO ══ -->
+<div class="card-section" id="cardapio">
+    <div class="card-inner">
+        <p class="label">O que servimos</p>
+        <h2 class="card-title">Drinks &amp; Petiscos</h2>
+
+        <!-- Asymmetric layout -->
+        <div class="drinks-layout">
+            <!-- Featured: Chopp (large left) -->
+            <div class="drink-featured">
+                <img src="imgs/chopp.jpg" alt="Chopp Gelado" class="drink-featured-img">
+                <div class="drink-featured-body">
+                    <div class="drink-featured-name">Chopp Gelado</div>
+                    <p class="drink-featured-desc">Tirado na hora, espuma na medida certa. O clássico que nunca sai de moda — e na quinta tem dobradinha.</p>
+                </div>
+            </div>
+
+            <!-- Side: Drinks -->
+            <div class="drink-side">
+                <img src="imgs/drink.jpg" alt="Drinks Autorais" class="drink-side-img">
+                <div class="drink-side-body">
+                    <div class="drink-side-name">Drinks Autorais</div>
+                    <p class="drink-side-desc">Combinações do nosso bar pra surpreender a cada visita.</p>
+                </div>
+            </div>
+
+            <!-- Side: Petiscos -->
+            <div class="drink-side">
+                <img src="imgs/pessoas.jpg" alt="Petiscos" class="drink-side-img">
+                <div class="drink-side-body">
+                    <div class="drink-side-name">Petiscos</div>
+                    <p class="drink-side-desc">Torresmo sensacional, aperitivos e muito mais. Pede logo que acaba.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <p class="card-footer-text">Cardápio completo com preços no balcão — novidades toda semana.</p>
+            <a href="https://wa.me/5562981554756?text=Oi!%20Vim%20pelo%20site%2C%20quero%20saber%20mais%20sobre%20o%20MÔI" class="btn-ghost" target="_blank" rel="noopener">Falar pelo WhatsApp</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ GALERIA ══ -->
+<div class="galeria">
+    <div class="gal-item"><img src="imgs/crowd.jpg" alt="Noite no MÔI"></div>
+    <div class="gal-item"><img src="imgs/pessoas.jpg" alt="Clientes MÔI"></div>
+    <div class="gal-item"><img src="imgs/balcao.jpg" alt="Balcão MÔI"></div>
+</div>
+
+
+<!-- ══ LOCALIZAÇÃO ══ -->
+<div class="local-section" id="local">
+    <div class="local-inner">
+        <div>
+            <p class="label">Onde estamos</p>
+            <h2 class="local-title">Venha ao MÔI</h2>
+
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-icon">📍</span>
+                    <span>R. T-59, 166 — Setor Bueno, Goiânia&nbsp;-&nbsp;GO</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-icon">📞</span>
+                    <span>(62) 3097-6819</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-icon">📸</span>
+                    <a href="https://instagram.com/moigoiania" target="_blank" rel="noopener">@moigoiania</a>
+                </li>
+            </ul>
+
+            <ul class="horas-lista">
+                <li class="hora-row"><span class="hora-dia">Segunda e Terça</span><span class="hora-val fechado">Fechado</span></li>
+                <li class="hora-row"><span class="hora-dia">Quarta-feira</span><span class="hora-val">18h — 01h</span></li>
+                <li class="hora-row"><span class="hora-dia">Quinta-feira</span><span class="hora-val destaque">19h — 02h &nbsp;✦ Happy Hour</span></li>
+                <li class="hora-row"><span class="hora-dia">Sexta-feira</span><span class="hora-val">19h — 03h</span></li>
+                <li class="hora-row"><span class="hora-dia">Sábado</span><span class="hora-val">19h — 03h</span></li>
+                <li class="hora-row"><span class="hora-dia">Domingo</span><span class="hora-val fechado">Fechado</span></li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="map-box">
+                <iframe src="https://maps.google.com/maps?q=R.+T-59,+166,+Setor+Bueno,+Goiania,+GO,+Brazil&output=embed&z=16" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localização MÔI Goiânia"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="footer-main">
+        <div class="footer-brand">
+            <div class="footer-logo">MÔI</div>
+            <div class="footer-sub">Seu refúgio no Setor Bueno</div>
+        </div>
+        <ul class="footer-nav">
+            <li><a href="#sobre">Quem somos</a></li>
+            <li><a href="#programacao">Programação</a></li>
+            <li><a href="#cardapio">Cardápio</a></li>
+            <li><a href="#local">Localização</a></li>
+        </ul>
+        <div class="footer-social">
+            <a href="https://instagram.com/moigoiania" class="soc-btn" target="_blank" rel="noopener" title="@moigoiania">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-copy">© 2024 MÔI Bar e Restaurante · R. T-59, 166 — Setor Bueno, Goiânia</span>
+        <span class="footer-copy">Feito com carinho em Goiânia</span>
+    </div>
+</footer>
+
+
+<script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            const target = document.querySelector(link.getAttribute('href'));
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+</script>
+</body>
+</html>
